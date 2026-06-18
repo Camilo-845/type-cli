@@ -5,14 +5,13 @@ import (
 )
 
 var (
-	green     = lipgloss.AdaptiveColor{Light: "#2E7D32", Dark: "#4CAF50"}
-	red       = lipgloss.AdaptiveColor{Light: "#C62828", Dark: "#F44336"}
-	subtle    = lipgloss.AdaptiveColor{Light: "#9E9E9E", Dark: "#616161"}
-	muted     = lipgloss.AdaptiveColor{Light: "#BDBDBD", Dark: "#424242"}
-	highlight = lipgloss.AdaptiveColor{Light: "#1565C0", Dark: "#64B5F6"}
-	gold      = lipgloss.AdaptiveColor{Light: "#F57F17", Dark: "#FFD54F"}
-	white     = lipgloss.AdaptiveColor{Light: "#212121", Dark: "#E0E0E0"}
-	bg        = lipgloss.AdaptiveColor{Light: "#FAFAFA", Dark: "#1E1E1E"}
+	green     = lipgloss.Color("2")
+	red       = lipgloss.Color("1")
+	subtle    = lipgloss.Color("8")
+	muted     = lipgloss.Color("7")
+	highlight = lipgloss.Color("6")
+	gold      = lipgloss.Color("3")
+	white     = lipgloss.Color("15")
 )
 
 var (
@@ -66,15 +65,18 @@ var (
 			Strikethrough(true)
 
 	untypedStyle = lipgloss.NewStyle().
-			Foreground(subtle)
+			Foreground(white)
 
 	cursorStyle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(highlight).
 			Underline(true)
 
-	typedWordStyle = lipgloss.NewStyle().
-			Foreground(muted)
+	typedCorrectStyle = lipgloss.NewStyle().
+			Foreground(green)
+
+	typedIncorrectStyle = lipgloss.NewStyle().
+			Foreground(red)
 )
 
 var (

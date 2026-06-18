@@ -77,7 +77,7 @@ func (m Model) renderWordsArea() string {
 	for i, ws := range m.gm.Words {
 		var word string
 		if i < m.gm.Current {
-			word = typedWordStyle.Render(ws.Word)
+			word = renderCompletedWord(ws)
 		} else if i == m.gm.Current {
 			word = m.renderCurrentWord(ws)
 		} else {
@@ -146,6 +146,15 @@ func (m Model) renderCurrentWord(ws game.WordState) string {
 	}
 
 	return strings.Join(chars, "")
+}
+
+func renderCompletedWord(ws game.WordState) string {
+	for _, c := range ws.Correct {
+		if !c {
+			return typedIncorrectStyle.Render(ws.Word)
+		}
+	}
+	return typedCorrectStyle.Render(ws.Word)
 }
 
 func (m Model) renderProgressArea() string {
