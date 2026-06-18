@@ -1,6 +1,7 @@
 param(
     [string]$Dir = "$env:LOCALAPPDATA\Programs\tpg",
-    [string]$Version = ""
+    [string]$Version = "",
+    [switch]$NoPath
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,7 +14,6 @@ if ($Version) {
     $DownloadUrl = "https://github.com/$Repo/releases/latest/download/$Binary-windows"
 }
 
-$Arch = [System.Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()
 if ([Environment]::Is64BitOperatingSystem) {
     $Arch = "amd64"
 } else {
@@ -30,11 +30,21 @@ Invoke-WebRequest -Uri $DownloadUrl -OutFile "$Dir\$Binary.exe" -UseBasicParsing
 
 Write-Host "Installed $Binary to $Dir\$Binary.exe" -ForegroundColor Green
 
-$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+$userPath = [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::User) ?? ""
 if ($userPath -notlike "*$Dir*") {
-    Write-Host ""
-    Write-Host "Warning: $Dir is not in your PATH." -ForegroundColor Yellow
-    Write-Host "  Run this to add it:"
-    Write-Host "  [Environment]::SetEnvironmentVariable('Path', `$env:Path + ';$Dir', 'User')" -ForegroundColor Green
-    Write-Host "  Then restart your terminal."
+    if (-not $NoPath) {
+        [Environment]::SetEnvironmentVariable(
+            "Path",
+            [Environment]::GetEnvironmentVariable("Path", [EnvironmentVariableTarget]::User) + ";$Dir",
+            [EnvironmentVariableTarget]::User
+        )
+        $env:Path += ";$Dir"
+        Write-Host "Added $Dir to user PATH." -ForegroundColor Green
+    } else {
+        Write-Host ""
+        Write-Host "Warning: $Dir is not in your PATH." -ForegroundColor Yellow
+        Write-Host "  Run this to add it:"
+        Write-Host "  [Environment]::SetEnvironmentVariable('Path', `$env:Path + ';$Dir', [EnvironmentVariableTarget]::User)" -ForegroundColor Green
+        Write-Host "  Then restart your terminal."
+    }
 }
