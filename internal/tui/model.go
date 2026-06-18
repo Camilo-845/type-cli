@@ -1,11 +1,11 @@
 package tui
 
 import (
-	"github.com/Camilo-845/typingame/internal/config"
-	"github.com/Camilo-845/typingame/internal/game"
-	"github.com/Camilo-845/typingame/internal/words"
+	"github.com/Camilo-845/type-cli/internal/config"
+	"github.com/Camilo-845/type-cli/internal/game"
+	"github.com/Camilo-845/type-cli/internal/words"
 
-	hg "github.com/Camilo-845/typingame/internal/history"
+	hg "github.com/Camilo-845/type-cli/internal/history"
 )
 
 type screen int

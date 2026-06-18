@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 
-	"github.com/Camilo-845/typingame/internal/game"
+	"github.com/Camilo-845/type-cli/internal/game"
 )
 
 func (m Model) viewTyping() string {

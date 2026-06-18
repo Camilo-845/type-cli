@@ -1,4 +1,4 @@
-module github.com/Camilo-845/typingame
+module github.com/Camilo-845/type-cli
 
 go 1.25.7
 
