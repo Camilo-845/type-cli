@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Camilo-845/typingame/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Camilo-845/typingame/main/install.sh | bash
 ```
 
 Requires Go 1.25+. Installs `tpg` to `~/.local/bin`. Ensure it's in your `PATH`.
