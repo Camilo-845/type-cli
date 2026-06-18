@@ -88,6 +88,12 @@ func (g *Game) handleBackspace() {
 	}
 
 	if len(ws.Typed) == 0 {
+		if g.Current > 0 {
+			g.Current--
+			if g.completedWords > 0 {
+				g.completedWords--
+			}
+		}
 		return
 	}
 
