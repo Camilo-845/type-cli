@@ -1,12 +1,12 @@
 param(
-    [string]$Dir = "$env:LOCALAPPDATA\Programs\tpg",
+    [string]$Dir = "$env:LOCALAPPDATA\Programs\tcli",
     [string]$Version = "",
     [switch]$NoPath
 )
 
 $ErrorActionPreference = "Stop"
 $Repo = "Camilo-845/type-cli"
-$Binary = "tpg"
+$Binary = "tcli"
 
 if ($Version) {
     $DownloadUrl = "https://github.com/$Repo/releases/download/$Version/$Binary-windows"
