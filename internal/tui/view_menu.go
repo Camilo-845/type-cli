@@ -12,9 +12,9 @@ func (m Model) viewMenu() string {
 		Bold(true).
 		Foreground(highlight).
 		Render(strings.Join([]string{
-			"╔╦╗╦ ╦╔═╗╔═╗╔═╗╔╦╗╔═╗",
-			" ║ ╚╦╝╠═╝║╣ ║ ╦║║║║╣ ",
-			" ╩  ╩ ╩  ╚═╝╚═╝╩ ╩╚═╝",
+			"╔╦╗╦ ╦╔═╗╔═╗   ╔═╗╦  ╦",
+			" ║ ╚╦╝╠═╝║╣  ═ ║  ║  ║",
+			" ╩  ╩ ╩  ╚═╝   ╚═╝╚═ ╩",
 		}, "\n"))
 
 	paramLabel := "duration"
