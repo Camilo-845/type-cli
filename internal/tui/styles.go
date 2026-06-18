@@ -40,7 +40,7 @@ var (
 
 	helpStyle = lipgloss.NewStyle().
 			Foreground(muted).
-			MarginTop(2)
+			MarginTop(1)
 
 	containerStyle = lipgloss.NewStyle().
 			Align(lipgloss.Center).

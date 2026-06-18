@@ -66,11 +66,10 @@ func (m Model) viewMenu() string {
 			prefix = "▸ "
 		}
 
-		menu.WriteString(fmt.Sprintf("%s%-14s%s\n",
+		fmt.Fprintf(&menu, "%s%-14s%s\n",
 			prefix,
 			labelStyle.Render(item.label),
-			menuValueStyle.Render("["+item.value+"]"),
-		))
+			menuValueStyle.Render("["+item.value+"]"))
 	}
 
 	help := helpStyle.Render("[space] start    [↑/↓] navigate    [enter] change    [q] quit")
@@ -105,7 +104,6 @@ func (m Model) viewTyping() string {
 		wordsArea,
 		"",
 		progressArea,
-		"",
 		help,
 	)
 }
@@ -124,10 +122,7 @@ func (m Model) renderTopBar() string {
 			m.gm.LiveWPM(), m.gm.LiveAccuracy()))
 	}
 
-	barWidth := m.width - 4
-	if barWidth < 40 {
-		barWidth = 40
-	}
+	barWidth := max(m.width-4, 40)
 
 	leftPad := barWidth - lipgloss.Width(left) - lipgloss.Width(right)
 	if leftPad < 0 {
@@ -142,21 +137,12 @@ func (m Model) renderWordsArea() string {
 		return ""
 	}
 
-	maxWidth := m.width - 8
-	if maxWidth < 20 {
-		maxWidth = 20
-	}
+	maxWidth := max(m.width-8, 20)
 
 	current := m.gm.Current
-	start := current - 3
-	if start < 0 {
-		start = 0
-	}
+	start := max(current-3, 0)
 
-	end := start + 50
-	if end > len(m.gm.Words) {
-		end = len(m.gm.Words)
-	}
+	end := min(start+50, len(m.gm.Words))
 
 	var lines []string
 	var currentLineWords []string
@@ -230,31 +216,21 @@ func (m Model) renderProgressArea() string {
 
 	barWidth := 30
 	if m.width > 0 {
-		barWidth = m.width - 20
-		if barWidth < 10 {
-			barWidth = 10
-		}
-		if barWidth > 60 {
-			barWidth = 60
-		}
+		barWidth = min(max(m.width-20, 10), 60)
 	}
 
 	var filled int
 	var label string
 
+	totalChars := m.gm.TotalChars()
+	if totalChars > 0 {
+		filled = int(float64(m.gm.CorrectChars()) / float64(totalChars) * float64(barWidth))
+	}
+
 	if m.gm.TimeMode {
 		remaining := m.gm.Remaining()
-		total := m.gm.Duration
-		elapsed := total - remaining
-		if total > 0 {
-			filled = int(float64(elapsed) / float64(total) * float64(barWidth))
-		}
 		label = fmt.Sprintf("%.0fs", remaining.Seconds())
 	} else {
-		total := len(m.gm.Words)
-		if total > 0 {
-			filled = int(float64(m.gm.Current) / float64(total) * float64(barWidth))
-		}
 		label = fmt.Sprintf("%d/%d", m.gm.Current, m.gm.WordCount)
 	}
 
@@ -266,11 +242,11 @@ func (m Model) renderProgressArea() string {
 	}
 
 	bar := ""
-	if m.gm.State == game.Running {
-		bar = lipgloss.NewStyle().Foreground(gold).Render(strings.Repeat("█", filled))
-		bar += lipgloss.NewStyle().Foreground(muted).Render(strings.Repeat("░", barWidth-filled))
+	if m.gm.State == game.Running || m.gm.State == game.Idle {
+		bar = lipgloss.NewStyle().Foreground(gold).Render(strings.Repeat("▁", filled))
+		bar += lipgloss.NewStyle().Foreground(muted).Render(strings.Repeat("▁", barWidth-filled))
 	} else {
-		bar = lipgloss.NewStyle().Foreground(muted).Render(strings.Repeat("░", barWidth))
+		bar = lipgloss.NewStyle().Foreground(muted).Render(strings.Repeat("▁", barWidth))
 	}
 
 	labelStyled := lipgloss.NewStyle().Foreground(subtle).Render(label)
@@ -359,10 +335,7 @@ func (m Model) viewHistory() string {
 
 	total := len(m.results)
 	newest := total - 1 - m.historyScroll
-	oldest := newest - 14
-	if oldest < 0 {
-		oldest = 0
-	}
+	oldest := max(newest-14, 0)
 
 	var items []string
 	items = append(items, header)

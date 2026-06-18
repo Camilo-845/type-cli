@@ -286,6 +286,18 @@ func (g *Game) LiveAccuracy() float64 {
 	return float64(g.correctKeystrokes) / float64(g.totalKeystrokes) * 100
 }
 
+func (g *Game) CorrectChars() int {
+	return g.correctKeystrokes
+}
+
+func (g *Game) TotalChars() int {
+	total := 0
+	for _, ws := range g.Words {
+		total += len(ws.Word)
+	}
+	return total
+}
+
 func (g *Game) Stats() *Stats {
 	elapsed := g.Elapsed.Minutes()
 	if elapsed < 0.001 {
