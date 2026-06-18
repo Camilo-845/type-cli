@@ -7,11 +7,11 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
 
-	"type_game2/internal/tui"
+	"github.com/Camilo-845/typingame/internal/tui"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "typegame",
+	Use:   "tpg",
 	Short: "A Monkeytype-inspired typing game for the terminal",
 	Long: `TypeGame is a terminal-based typing speed test inspired by Monkeytype.
 Test your typing speed with different modes, word lists, and track your progress.`,

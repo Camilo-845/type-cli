@@ -1,4 +1,4 @@
-module type_game2
+module github.com/Camilo-845/typingame
 
 go 1.25.7
 

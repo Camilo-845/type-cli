@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"type_game2/internal/paths"
+	"github.com/Camilo-845/typingame/internal/paths"
 )
 
 func configPath() (string, error) {

@@ -1,6 +1,6 @@
 package main
 
-import "type_game2/cmd"
+import "github.com/Camilo-845/typingame/cmd"
 
 func main() {
 	cmd.Execute()

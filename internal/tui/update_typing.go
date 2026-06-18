@@ -3,8 +3,8 @@ package tui
 import (
 	tea "github.com/charmbracelet/bubbletea"
 
-	"type_game2/internal/game"
-	hg "type_game2/internal/history"
+	"github.com/Camilo-845/typingame/internal/game"
+	hg "github.com/Camilo-845/typingame/internal/history"
 )
 
 func (m Model) handleTypingKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {

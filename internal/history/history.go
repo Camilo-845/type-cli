@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"type_game2/internal/game"
-	"type_game2/internal/paths"
+	"github.com/Camilo-845/typingame/internal/game"
+	"github.com/Camilo-845/typingame/internal/paths"
 )
 
 func historyPath() (string, error) {
