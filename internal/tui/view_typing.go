@@ -63,22 +63,17 @@ func (m Model) renderWordsArea() string {
 
 	maxWidth := max(m.width-8, 20)
 
-	current := m.gm.Current
-	start := max(current-3, 0)
+	var allLines []string
+	var lineWords []string
+	lineWidth := 0
+	currentWordLine := 0
+	foundCurrent := false
 
-	end := min(start+50, len(m.gm.Words))
-
-	var lines []string
-	var currentLineWords []string
-	currentLineWidth := 0
-
-	for i := start; i < end; i++ {
-		ws := m.gm.Words[i]
-
+	for i, ws := range m.gm.Words {
 		var word string
-		if i < current {
+		if i < m.gm.Current {
 			word = typedWordStyle.Render(ws.Word)
-		} else if i == current {
+		} else if i == m.gm.Current {
 			word = m.renderCurrentWord(ws)
 		} else {
 			word = untypedStyle.Render(ws.Word)
@@ -86,28 +81,43 @@ func (m Model) renderWordsArea() string {
 
 		wordWidth := lipgloss.Width(word)
 
-		if currentLineWidth+wordWidth+1 > maxWidth && len(currentLineWords) > 0 {
-			lines = append(lines, strings.Join(currentLineWords, " "))
-			currentLineWords = nil
-			currentLineWidth = 0
+		if lineWidth+wordWidth+1 > maxWidth && len(lineWords) > 0 {
+			allLines = append(allLines, strings.Join(lineWords, " "))
+			lineWords = nil
+			lineWidth = 0
 		}
 
-		if len(currentLineWords) > 0 {
-			currentLineWidth++
+		if len(lineWords) > 0 {
+			lineWidth++
 		}
-		currentLineWords = append(currentLineWords, word)
-		currentLineWidth += wordWidth
+		lineWords = append(lineWords, word)
+		lineWidth += wordWidth
 
-		if len(lines) >= 3 {
-			break
+		if i == m.gm.Current {
+			currentWordLine = len(allLines)
+			foundCurrent = true
 		}
 	}
 
-	if len(currentLineWords) > 0 {
-		lines = append(lines, strings.Join(currentLineWords, " "))
+	if len(lineWords) > 0 {
+		allLines = append(allLines, strings.Join(lineWords, " "))
 	}
 
-	return strings.Join(lines, "\n")
+	if !foundCurrent || currentWordLine >= len(allLines) {
+		if len(allLines) > 0 {
+			currentWordLine = len(allLines) - 1
+		}
+	}
+
+	totalLines := len(allLines)
+	if totalLines == 0 {
+		return ""
+	}
+
+	visibleLines := min(totalLines, 3)
+	scrollOffset := max(0, min(currentWordLine-1, totalLines-visibleLines))
+
+	return strings.Join(allLines[scrollOffset:scrollOffset+visibleLines], "\n")
 }
 
 func (m Model) renderCurrentWord(ws game.WordState) string {
