@@ -144,6 +144,12 @@ func (g *Game) handleKeystroke(char rune) {
 	if ws.Correct[idx] {
 		g.pendingCorrect++
 	}
+
+	if g.Current == g.WordCount-1 && len(ws.Typed) == len(ws.Word) {
+		g.completedWords++
+		g.Current++
+		g.State = Complete
+	}
 }
 
 func (g *Game) HandleKey(s string) {
