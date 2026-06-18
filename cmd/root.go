@@ -11,7 +11,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tpg",
+	Use:   "tcli",
 	Short: "A Monkeytype-inspired typing game for the terminal",
 	Long: `TypeGame is a terminal-based typing speed test inspired by Monkeytype.
 Test your typing speed with different modes, word lists, and track your progress.`,

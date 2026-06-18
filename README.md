@@ -1,4 +1,4 @@
-# tpg — Typing Game for the Terminal
+# tcli — Typing Game for the Terminal
 
 ⌨️ A Monkeytype-inspired typing speed test for the terminal.
 
@@ -18,12 +18,12 @@ curl -fsSL https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.sh
 irm https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.ps1 | iex
 ```
 
-Installs `tpg` to `~/.local/bin`. Ensure it's in your `PATH`. Only `curl` or `wget` required.
+Installs `tcli` to `~/.local/bin`. Ensure it's in your `PATH`. Only `curl` or `wget` required.
 
 ## Usage
 
 ```
-$ tpg
+$ tcli
 ```
 
 | Key | Action |

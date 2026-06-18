@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="Camilo-845/type-cli"
-BINARY="tpg"
+BINARY="tcli"
 DEFAULT_DIR="$HOME/.local/bin"
 
 RED='\033[0;31m'
