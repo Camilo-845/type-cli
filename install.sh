@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="Camilo-845/typingame"
+REPO="Camilo-845/type-cli"
 BINARY="tpg"
 DEFAULT_DIR="$HOME/.local/bin"
 

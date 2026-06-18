@@ -9,13 +9,13 @@
 **Linux / macOS:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Camilo-845/typingame/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.sh | bash
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-irm https://raw.githubusercontent.com/Camilo-845/typingame/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.ps1 | iex
 ```
 
 Installs `tpg` to `~/.local/bin`. Ensure it's in your `PATH`. Only `curl` or `wget` required.

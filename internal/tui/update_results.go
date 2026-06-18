@@ -3,7 +3,7 @@ package tui
 import (
 	tea "github.com/charmbracelet/bubbletea"
 
-	hg "github.com/Camilo-845/typingame/internal/history"
+	hg "github.com/Camilo-845/type-cli/internal/history"
 )
 
 func (m Model) handleResultKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {

@@ -5,7 +5,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$Repo = "Camilo-845/typingame"
+$Repo = "Camilo-845/type-cli"
 $Binary = "tpg"
 
 if ($Version) {
