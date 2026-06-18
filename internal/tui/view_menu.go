@@ -48,9 +48,18 @@ func (m Model) viewMenu() string {
 			menuValueStyle.Render("["+item.value+"]"))
 	}
 
-	help := helpStyle.Render("[space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit")
+	helpStr := "[space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit"
+	if m.width < 60 {
+		helpStr = "[space] start  [↑/↓] nav\n[h/l] change  [q] quit"
+	}
+	helpLines := strings.Split(helpStr, "\n")
+	padWidth := max(m.width, 30)
+	for i, line := range helpLines {
+		helpLines[i] = lipgloss.PlaceHorizontal(padWidth, lipgloss.Center, line)
+	}
+	help := helpStyle.Render(strings.Join(helpLines, "\n"))
 
-	return containerStyle.Render(
+	return renderContainer(m.width,
 		lipgloss.JoinVertical(lipgloss.Center,
 			logo,
 			"",

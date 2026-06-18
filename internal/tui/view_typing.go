@@ -38,21 +38,26 @@ func (m Model) renderTopBar() string {
 		modeText = fmt.Sprintf("%d words", m.cfg.WordCount)
 	}
 
-	left := topBarStyle.Render(fmt.Sprintf("%s    %s", modeText, m.cfg.WordList))
+	left := topBarStyle.Render(fmt.Sprintf("%s %s", modeText, m.cfg.WordList))
 
 	right := ""
 	if m.gm.State == game.Running {
-		right = topBarStyle.Render(fmt.Sprintf("%.0f wpm   %.0f%%",
+		right = topBarStyle.Render(fmt.Sprintf("%.0f wpm  %.0f%%",
 			m.gm.LiveWPM(), m.gm.LiveAccuracy()))
 	}
 
-	barWidth := max(m.width-4, 40)
-
-	leftPad := barWidth - lipgloss.Width(left) - lipgloss.Width(right)
-	if leftPad < 0 {
-		leftPad = 1
+	if m.width < 44 {
+		if right != "" {
+			return lipgloss.JoinVertical(lipgloss.Left, left, right)
+		}
+		return left
 	}
 
+	barWidth := m.width - 4
+	leftPad := barWidth - lipgloss.Width(left) - lipgloss.Width(right)
+	if leftPad < 1 {
+		leftPad = 1
+	}
 	return left + strings.Repeat(" ", leftPad) + right
 }
 

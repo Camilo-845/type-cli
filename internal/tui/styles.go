@@ -41,11 +41,21 @@ var (
 	helpStyle = lipgloss.NewStyle().
 			Foreground(muted).
 			MarginTop(1)
-
-	containerStyle = lipgloss.NewStyle().
-			Align(lipgloss.Center).
-			Padding(1, 2)
 )
+
+func renderContainer(width int, content string) string {
+	pad := 2
+	if width < 40 {
+		pad = 1
+	}
+	if width < 30 {
+		pad = 0
+	}
+	return lipgloss.NewStyle().
+		Align(lipgloss.Center).
+		Padding(0, pad).
+		Render(content)
+}
 
 var (
 	correctStyle = lipgloss.NewStyle().
