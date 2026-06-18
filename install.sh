@@ -12,7 +12,7 @@ NC='\033[0m'
 
 usage() {
     cat <<EOF
-Usage: curl -fsSL https://raw.githubusercontent.com/$REPO/main/install.sh | bash [-s -- OPTIONS]
+Usage: curl -fsSL https://raw.githubusercontent.com/$REPO/master/install.sh | bash [-s -- OPTIONS]
 
 Options:
   --dir PATH     Install directory (default: $DEFAULT_DIR)
