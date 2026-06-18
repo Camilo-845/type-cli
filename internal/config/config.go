@@ -43,3 +43,74 @@ func (c *Config) Validate() *Config {
 
 	return c
 }
+
+func (c *Config) ToggleMode() {
+	if c.Mode == "time" {
+		c.Mode = "words"
+	} else {
+		c.Mode = "time"
+	}
+}
+
+var durations = []int{15, 30, 60, 120}
+
+func (c *Config) CycleDuration(forward bool) {
+	n := len(durations)
+	for i, d := range durations {
+		if d == c.Duration {
+			if forward {
+				c.Duration = durations[(i+1)%n]
+			} else {
+				c.Duration = durations[(i-1+n)%n]
+			}
+			return
+		}
+	}
+}
+
+var counts = []int{10, 25, 50, 100}
+
+func (c *Config) CycleWordCount(forward bool) {
+	n := len(counts)
+	for i, ct := range counts {
+		if ct == c.WordCount {
+			if forward {
+				c.WordCount = counts[(i+1)%n]
+			} else {
+				c.WordCount = counts[(i-1+n)%n]
+			}
+			return
+		}
+	}
+}
+
+var lists = []string{"english", "english_1k"}
+
+func (c *Config) CycleWordList(forward bool) {
+	n := len(lists)
+	for i, l := range lists {
+		if l == c.WordList {
+			if forward {
+				c.WordList = lists[(i+1)%n]
+			} else {
+				c.WordList = lists[(i-1+n)%n]
+			}
+			return
+		}
+	}
+}
+
+func (c *Config) Apply(cursor int, forward bool) {
+	switch cursor {
+	case 0:
+		c.ToggleMode()
+	case 1:
+		if c.Mode == "time" {
+			c.CycleDuration(forward)
+		} else {
+			c.CycleWordCount(forward)
+		}
+	case 2:
+		c.CycleWordList(forward)
+	}
+}

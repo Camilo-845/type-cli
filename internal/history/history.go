@@ -6,18 +6,11 @@ import (
 	"path/filepath"
 
 	"type_game2/internal/game"
+	"type_game2/internal/paths"
 )
 
-func historyDir() (string, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(home, ".typegame"), nil
-}
-
 func historyPath() (string, error) {
-	dir, err := historyDir()
+	dir, err := paths.AppDir()
 	if err != nil {
 		return "", err
 	}
@@ -47,7 +40,7 @@ func Load() ([]game.Result, error) {
 }
 
 func Save(results []game.Result) error {
-	dir, err := historyDir()
+	dir, err := paths.AppDir()
 	if err != nil {
 		return err
 	}

@@ -4,18 +4,12 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+
+	"type_game2/internal/paths"
 )
 
-func configDir() (string, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(home, ".typegame"), nil
-}
-
 func configPath() (string, error) {
-	dir, err := configDir()
+	dir, err := paths.AppDir()
 	if err != nil {
 		return "", err
 	}
@@ -44,7 +38,7 @@ func Load() *Config {
 func Save(cfg *Config) error {
 	cfg.Validate()
 
-	dir, err := configDir()
+	dir, err := paths.AppDir()
 	if err != nil {
 		return err
 	}
