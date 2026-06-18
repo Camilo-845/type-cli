@@ -16,7 +16,7 @@ func (m Model) viewHistory() string {
 				"",
 				subtitleStyle.Render("No tests completed yet"),
 				"",
-				helpStyle.Render("[esc] back    [q] quit"),
+				helpStyle.Render("[tab/esc] back    [q] quit"),
 			),
 		)
 	}
@@ -78,7 +78,7 @@ func (m Model) viewHistory() string {
 		items = append(items, line)
 	}
 
-	help := helpStyle.Render("[↑/↓] scroll    [esc] back    [q] quit")
+	help := helpStyle.Render("[↑/↓] scroll    [tab/esc] back    [q] quit")
 
 	items = append(items, "")
 	items = append(items, help)

@@ -29,7 +29,7 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "h", "left":
 		m.cfg.Apply(m.cursor, false)
 
-	case " ", "tab":
+	case " ", "enter":
 		m.startGame()
 		return m, tickCmd()
 	}

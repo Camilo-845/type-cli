@@ -25,7 +25,7 @@ func (m Model) handleResultKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "r", "enter", " ":
 		fallthrough
-	case "esc":
+	case "esc", "tab":
 		m.screen = screenMenu
 		m.result = nil
 		m.gm = nil

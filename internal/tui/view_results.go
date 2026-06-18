@@ -59,9 +59,9 @@ func (m Model) viewResults() string {
 		resultValueStyle.Render(r.WordList),
 	)
 
-	helpStr := "[enter] retry    [h] history    [esc] menu    [q] quit"
+	helpStr := "[enter] retry    [h] history    [tab/esc] menu    [q] quit"
 	if m.width < 60 {
-		helpStr = "[enter] retry  [h] history\n[esc] menu  [q] quit"
+		helpStr = "[enter] retry  [h] history\n[tab/esc] menu  [q] quit"
 	}
 	helpLines := strings.Split(helpStr, "\n")
 	padWidth := max(m.width, 30)

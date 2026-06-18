@@ -20,7 +20,7 @@ func (m Model) viewTyping() string {
 
 	progressArea := m.renderProgressArea()
 
-	help := helpStyle.Render("[esc] back to menu")
+	help := helpStyle.Render("[tab/esc] back to menu")
 
 	return lipgloss.JoinVertical(lipgloss.Center,
 		topBar,
@@ -54,10 +54,7 @@ func (m Model) renderTopBar() string {
 	}
 
 	barWidth := m.width - 4
-	leftPad := barWidth - lipgloss.Width(left) - lipgloss.Width(right)
-	if leftPad < 1 {
-		leftPad = 1
-	}
+	leftPad := max(barWidth-lipgloss.Width(left)-lipgloss.Width(right), 1)
 	return left + strings.Repeat(" ", leftPad) + right
 }
 
@@ -149,12 +146,21 @@ func (m Model) renderCurrentWord(ws game.WordState) string {
 }
 
 func renderCompletedWord(ws game.WordState) string {
-	for _, c := range ws.Correct {
-		if !c {
-			return typedIncorrectStyle.Render(ws.Word)
+	var chars []string
+
+	for i, ch := range ws.Word {
+		if i < len(ws.Correct) && ws.Correct[i] {
+			chars = append(chars, correctStyle.Render(string(ch)))
+		} else {
+			chars = append(chars, incorrectStyle.Render(string(ch)))
 		}
 	}
-	return typedCorrectStyle.Render(ws.Word)
+
+	for i := len(ws.Word); i < len(ws.Typed); i++ {
+		chars = append(chars, incorrectStyle.Render(string(ws.Typed[i])))
+	}
+
+	return strings.Join(chars, "")
 }
 
 func (m Model) renderProgressArea() string {

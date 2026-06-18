@@ -30,7 +30,7 @@ func (m Model) viewMenu() string {
 	}{
 		{"mode", m.cfg.Mode},
 		{paramLabel, paramValue},
-		{"word list", m.cfg.WordList},
+		{"language", m.cfg.WordList},
 	}
 
 	var menu strings.Builder
@@ -48,9 +48,9 @@ func (m Model) viewMenu() string {
 			menuValueStyle.Render("["+item.value+"]"))
 	}
 
-	helpStr := "[space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit"
+	helpStr := "[enter/space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit"
 	if m.width < 60 {
-		helpStr = "[space] start  [↑/↓] nav\n[h/l] change  [q] quit"
+		helpStr = "[enter/space] start  [↑/↓] nav\n[h/l] change  [q] quit"
 	}
 	helpLines := strings.Split(helpStr, "\n")
 	padWidth := max(m.width, 30)

@@ -71,12 +71,6 @@ var (
 			Bold(true).
 			Foreground(highlight).
 			Underline(true)
-
-	typedCorrectStyle = lipgloss.NewStyle().
-			Foreground(green)
-
-	typedIncorrectStyle = lipgloss.NewStyle().
-			Foreground(red)
 )
 
 var (

@@ -11,7 +11,7 @@ func (m Model) handleTypingKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	key := msg.String()
 
 	switch key {
-	case "esc":
+	case "esc", "tab":
 		m.gm.Reset()
 		m.gm = nil
 		m.screen = screenMenu
