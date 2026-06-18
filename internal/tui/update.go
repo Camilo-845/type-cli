@@ -74,7 +74,7 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.cursor = 2
 		}
 
-	case "enter", "right", "left":
+	case "l", "right":
 		switch m.cursor {
 		case 0:
 			if m.cfg.Mode == "time" {
@@ -105,6 +105,45 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			for i, l := range lists {
 				if l == m.cfg.WordList {
 					m.cfg.WordList = lists[(i+1)%len(lists)]
+					break
+				}
+			}
+		}
+
+	case "h", "left":
+		switch m.cursor {
+		case 0:
+			if m.cfg.Mode == "time" {
+				m.cfg.Mode = "words"
+			} else {
+				m.cfg.Mode = "time"
+			}
+		case 1:
+			if m.cfg.Mode == "time" {
+				durations := []int{15, 30, 60, 120}
+				n := len(durations)
+				for i, d := range durations {
+					if d == m.cfg.Duration {
+						m.cfg.Duration = durations[(i-1+n)%n]
+						break
+					}
+				}
+			} else {
+				counts := []int{10, 25, 50, 100}
+				n := len(counts)
+				for i, c := range counts {
+					if c == m.cfg.WordCount {
+						m.cfg.WordCount = counts[(i-1+n)%n]
+						break
+					}
+				}
+			}
+		case 2:
+			lists := []string{"english", "english_1k"}
+			n := len(lists)
+			for i, l := range lists {
+				if l == m.cfg.WordList {
+					m.cfg.WordList = lists[(i-1+n)%n]
 					break
 				}
 			}
@@ -176,10 +215,7 @@ func (m Model) handleHistoryKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "j", "down":
-		maxScroll := len(m.results) - 15
-		if maxScroll < 0 {
-			maxScroll = 0
-		}
+		maxScroll := max(len(m.results)-15, 0)
 		if m.historyScroll < maxScroll {
 			m.historyScroll++
 		}

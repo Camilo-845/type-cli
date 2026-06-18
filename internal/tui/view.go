@@ -72,7 +72,7 @@ func (m Model) viewMenu() string {
 			menuValueStyle.Render("["+item.value+"]"))
 	}
 
-	help := helpStyle.Render("[space] start    [↑/↓] navigate    [enter] change    [q] quit")
+	help := helpStyle.Render("[space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit")
 
 	return containerStyle.Render(
 		lipgloss.JoinVertical(lipgloss.Center,
