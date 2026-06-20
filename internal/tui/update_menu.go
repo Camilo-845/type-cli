@@ -2,6 +2,8 @@ package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+
+	hg "github.com/Camilo-845/type-cli/internal/history"
 )
 
 func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
@@ -28,6 +30,16 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "h", "left":
 		m.cfg.Apply(m.cursor, false)
+
+	case "H":
+		m.screen = screenHistory
+		m.historyScroll = 0
+		var err error
+		m.results, err = hg.Load()
+		if err != nil {
+			m.results = nil
+		}
+		return m, nil
 
 	case " ", "enter":
 		m.startGame()
