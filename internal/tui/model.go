@@ -43,6 +43,11 @@ func NewModel() Model {
 	}
 }
 
+func (m *Model) SetLanguage(lang string) {
+	m.cfg.WordList = lang
+	m.cfg.Validate()
+}
+
 func (m *Model) startGame() {
 	_ = config.Save(m.cfg)
 

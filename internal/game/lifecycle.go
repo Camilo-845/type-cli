@@ -50,7 +50,7 @@ func (g *Game) Reset() {
 	g.pendingCorrect = 0
 
 	for i := range g.Words {
-		g.Words[i].Typed = ""
+		g.Words[i].Typed = nil
 		g.Words[i].Correct = nil
 	}
 }

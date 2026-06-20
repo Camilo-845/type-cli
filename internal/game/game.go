@@ -14,8 +14,8 @@ const (
 )
 
 type WordState struct {
-	Word    string
-	Typed   string
+	Word    []rune
+	Typed   []rune
 	Correct []bool
 }
 
@@ -63,7 +63,7 @@ func NewTimeGame(durationSec int, words []string) *Game {
 		if i >= wordPoolSize {
 			break
 		}
-		batch[i] = WordState{Word: w, Typed: "", Correct: nil}
+		batch[i] = WordState{Word: []rune(w), Typed: nil, Correct: nil}
 	}
 	return &Game{
 		Words:      batch,
@@ -81,7 +81,7 @@ func NewWordGame(count int, words []string) *Game {
 		if i >= count {
 			break
 		}
-		batch[i] = WordState{Word: w, Typed: "", Correct: nil}
+		batch[i] = WordState{Word: []rune(w), Typed: nil, Correct: nil}
 	}
 	return &Game{
 		Words:      batch,

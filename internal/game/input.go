@@ -25,7 +25,7 @@ func (g *Game) handleKeystroke(char rune) {
 		return
 	}
 
-	ws.Typed += string(char)
+	ws.Typed = append(ws.Typed, char)
 	ws.Correct = append(ws.Correct, false)
 
 	idx := len(ws.Typed) - 1
@@ -72,8 +72,9 @@ func (g *Game) HandleKey(s string) {
 		return
 	}
 
-	if len(s) == 1 {
-		g.handleKeystroke(rune(s[0]))
+	runes := []rune(s)
+	if len(runes) == 1 {
+		g.handleKeystroke(runes[0])
 	}
 }
 

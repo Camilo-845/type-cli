@@ -78,7 +78,7 @@ func (m Model) renderWordsArea() string {
 		} else if i == m.gm.Current {
 			word = m.renderCurrentWord(ws)
 		} else {
-			word = untypedStyle.Render(ws.Word)
+			word = untypedStyle.Render(string(ws.Word))
 		}
 
 		wordWidth := lipgloss.Width(word)
