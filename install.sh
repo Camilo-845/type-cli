@@ -50,9 +50,15 @@ while [[ $# -gt 0 ]]; do
 done
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+# Detect Android/Termux — must use android binary, not linux
+if [ "$OS" = "linux" ] && [ "$(uname -o 2>/dev/null)" = "Android" ]; then
+    OS="android"
+fi
+
 case "$OS" in
-    linux|darwin) ;;
-    *) die "Unsupported OS: $OS (only linux and darwin are supported)" ;;
+    linux|darwin|android) ;;
+    *) die "Unsupported OS: $OS (only linux, darwin, and android are supported)" ;;
 esac
 
 ARCH=$(uname -m)
