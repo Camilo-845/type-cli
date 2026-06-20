@@ -44,6 +44,7 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.cfg.Apply(m.cursor, false)
 
 	case "H":
+		m.previousScreen = m.screen
 		m.screen = screenHistory
 		m.historyScroll = 0
 		var err error

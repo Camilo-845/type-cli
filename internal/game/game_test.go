@@ -28,8 +28,8 @@ func TestHandleKey_CorrectChar(t *testing.T) {
 	if !ws.Correct[0] {
 		t.Error("expected correct")
 	}
-	if g.correctKeystrokes != 1 {
-		t.Errorf("expected 1 correct, got %d", g.correctKeystrokes)
+	if g.keystrokes.Correct() != 1 {
+		t.Errorf("expected 1 correct, got %d", g.keystrokes.Correct())
 	}
 }
 
@@ -41,8 +41,8 @@ func TestHandleKey_IncorrectChar(t *testing.T) {
 	if ws.Correct[0] {
 		t.Error("expected incorrect")
 	}
-	if g.incorrectKeystrokes != 1 {
-		t.Errorf("expected 1 incorrect, got %d", g.incorrectKeystrokes)
+	if g.keystrokes.Incorrect() != 1 {
+		t.Errorf("expected 1 incorrect, got %d", g.keystrokes.Incorrect())
 	}
 }
 
@@ -56,8 +56,8 @@ func TestHandleKey_SpaceAdvancesWord(t *testing.T) {
 	if g.Current != 1 {
 		t.Errorf("expected current 1, got %d", g.Current)
 	}
-	if g.completedWords != 1 {
-		t.Errorf("expected 1 completed, got %d", g.completedWords)
+	if g.keystrokes.Words() != 1 {
+		t.Errorf("expected 1 completed, got %d", g.keystrokes.Words())
 	}
 }
 
@@ -86,8 +86,8 @@ func TestHandleKey_ExtraChars(t *testing.T) {
 	if len(ws.Typed) != 3 {
 		t.Errorf("expected 3 typed chars, got %d", len(ws.Typed))
 	}
-	if g.extraKeystrokes != 2 {
-		t.Errorf("expected 2 extra, got %d", g.extraKeystrokes)
+	if g.keystrokes.Extra() != 2 {
+		t.Errorf("expected 2 extra, got %d", g.keystrokes.Extra())
 	}
 }
 
@@ -165,7 +165,7 @@ func TestReset(t *testing.T) {
 	if g.Current != 0 {
 		t.Error("expected current 0 after reset")
 	}
-	if g.totalKeystrokes != 0 {
+	if g.keystrokes.Total() != 0 {
 		t.Error("expected 0 keystrokes after reset")
 	}
 }

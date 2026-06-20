@@ -7,6 +7,11 @@ import (
 	"unicode"
 )
 
+var (
+	punctCheckRe   = regexp.MustCompile(`^\W*(\w+)\W*$`)
+	punctReplaceRe = regexp.MustCompile(`^(\W*)(\w+)(\W*)$`)
+)
+
 type contractionGroup struct {
 	base string
 	cont []string
@@ -43,8 +48,7 @@ var contractionGroups = []contractionGroup{
 
 func englishPunctuationCheck(word string) bool {
 	lower := strings.ToLower(word)
-	re := regexp.MustCompile(`^\W*(\w+)\W*$`)
-	matches := re.FindStringSubmatch(lower)
+	matches := punctCheckRe.FindStringSubmatch(lower)
 	if matches == nil {
 		return false
 	}
@@ -59,8 +63,7 @@ func englishPunctuationCheck(word string) bool {
 
 func englishPunctuationReplace(word string) string {
 	lower := strings.ToLower(word)
-	re := regexp.MustCompile(`^(\W*)(\w+)(\W*)$`)
-	matches := re.FindStringSubmatch(lower)
+	matches := punctReplaceRe.FindStringSubmatch(lower)
 	if matches == nil {
 		return word
 	}

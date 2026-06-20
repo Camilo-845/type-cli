@@ -20,8 +20,9 @@ const (
 )
 
 type Model struct {
-	screen        screen
-	cfg           *config.Config
+	screen         screen
+	previousScreen screen
+	cfg            *config.Config
 	gm            *game.Game
 	result        *game.Result
 	results       []game.Result
@@ -64,7 +65,7 @@ func (m *Model) startGame() {
 		Numbers:     m.cfg.Numbers,
 	}
 
-	wordPool := words.Generate(500, m.cfg.WordList, genCfg)
+	wordPool := words.Generate(game.WordPoolSize, m.cfg.WordList, genCfg)
 
 	if m.cfg.Mode == "words" {
 		m.gm = game.NewWordGame(m.cfg.WordCount, wordPool)
