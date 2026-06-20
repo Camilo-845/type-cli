@@ -20,8 +20,9 @@ const (
 )
 
 type Model struct {
-	screen        screen
-	cfg           *config.Config
+	screen         screen
+	previousScreen screen
+	cfg            *config.Config
 	gm            *game.Game
 	result        *game.Result
 	results       []game.Result

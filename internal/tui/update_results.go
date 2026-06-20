@@ -16,6 +16,7 @@ func (m Model) handleResultKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "h":
+		m.previousScreen = m.screen
 		m.screen = screenHistory
 		m.historyScroll = 0
 		var err error
@@ -56,7 +57,7 @@ func (m Model) handleHistoryKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 	case "esc":
-		m.screen = screenResults
+		m.screen = m.previousScreen
 		m.historyScroll = 0
 		return m, nil
 
