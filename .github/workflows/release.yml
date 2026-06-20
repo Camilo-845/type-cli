@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [linux, darwin, windows]
+        goos: [linux, darwin, windows, android]
         goarch: [amd64, arm64]
+        exclude:
+          - goos: android
+            goarch: amd64
     steps:
       - uses: actions/checkout@v4
 
@@ -25,7 +28,12 @@ jobs:
         run: |
           EXT=""
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
-          CGO_ENABLED=0 go build -buildmode=pie -ldflags="-s -w" -o "dist/tcli-${GOOS}-${GOARCH}${EXT}" .
+          if [ "$GOOS" = "android" ]; then
+            # Go auto-enables PIE on android; explicit -buildmode=pie breaks TLS alignment
+            CGO_ENABLED=0 go build -ldflags="-s -w" -o "dist/tcli-${GOOS}-${GOARCH}${EXT}" .
+          else
+            CGO_ENABLED=0 go build -buildmode=pie -ldflags="-s -w" -o "dist/tcli-${GOOS}-${GOARCH}${EXT}" .
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
