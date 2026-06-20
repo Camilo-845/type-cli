@@ -1,10 +1,12 @@
 package config
 
+import "github.com/Camilo-845/type-cli/internal/words"
+
 type Config struct {
-	Mode        string `json:"mode"`
-	Duration    int    `json:"duration"`
-	WordCount   int    `json:"word_count"`
-	WordList    string `json:"word_list"`
+	Mode      string `json:"mode"`
+	Duration  int    `json:"duration"`
+	WordCount int    `json:"word_count"`
+	WordList  string `json:"word_list"`
 }
 
 func DefaultConfig() *Config {
@@ -14,6 +16,10 @@ func DefaultConfig() *Config {
 		WordCount: 25,
 		WordList:  "english",
 	}
+}
+
+func AvailableLanguages() []string {
+	return words.ListLanguages()
 }
 
 func (c *Config) Validate() *Config {
@@ -36,8 +42,14 @@ func (c *Config) Validate() *Config {
 		c.WordCount = 25
 	}
 
-	validLists := map[string]bool{"english": true, "english_1k": true}
-	if !validLists[c.WordList] {
+	available := make(map[string]bool)
+	for _, lang := range words.ListLanguages() {
+		available[lang] = true
+	}
+	if len(available) == 0 {
+		available["english"] = true
+	}
+	if !available[c.WordList] {
 		c.WordList = "english"
 	}
 
@@ -84,20 +96,23 @@ func (c *Config) CycleWordCount(forward bool) {
 	}
 }
 
-var lists = []string{"english", "english_1k"}
-
 func (c *Config) CycleWordList(forward bool) {
-	n := len(lists)
-	for i, l := range lists {
+	names := words.Names()
+	if len(names) == 0 {
+		return
+	}
+	n := len(names)
+	for i, l := range names {
 		if l == c.WordList {
 			if forward {
-				c.WordList = lists[(i+1)%n]
+				c.WordList = names[(i+1)%n]
 			} else {
-				c.WordList = lists[(i-1+n)%n]
+				c.WordList = names[(i-1+n)%n]
 			}
 			return
 		}
 	}
+	c.WordList = names[0]
 }
 
 func (c *Config) Apply(cursor int, forward bool) {

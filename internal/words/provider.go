@@ -1,6 +1,7 @@
 package words
 
 import (
+	"math"
 	"math/rand/v2"
 )
 
@@ -35,9 +36,25 @@ func Generate(count int, listName string) []string {
 		}
 	}
 
+	meta, hasMeta := languageMeta[listName]
+	zipf := hasMeta && meta.OrderedByFrequency
+
 	words := make([]string, count)
 	for i := 0; i < count; i++ {
-		words[i] = pool[rand.IntN(len(pool))]
+		if zipf {
+			words[i] = pool[zipfIndex(len(pool))]
+		} else {
+			words[i] = pool[rand.IntN(len(pool))]
+		}
 	}
 	return words
+}
+
+func zipfIndex(n int) int {
+	u := rand.Float64()
+	idx := int(math.Pow(u, 0.85) * float64(n))
+	if idx >= n {
+		idx = n - 1
+	}
+	return idx
 }

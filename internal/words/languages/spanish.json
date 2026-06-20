@@ -1,0 +1,42 @@
+{
+  "name": "spanish",
+  "words": [
+    "de", "la", "que", "el", "en", "y", "a", "los", "se", "del",
+    "las", "un", "por", "con", "no", "una", "su", "para", "es", "al",
+    "lo", "como", "más", "pero", "sus", "le", "ya", "o", "este", "sí",
+    "porque", "esta", "entre", "cuando", "muy", "sin", "sobre", "también", "me", "hay",
+    "hasta", "desde", "todo", "nos", "durante", "todos", "uno", "les", "ni", "contra",
+    "otros", "ese", "eso", "ante", "ellos", "e", "esto", "mí", "antes", "algunos",
+    "qué", "unos", "yo", "otro", "otras", "otra", "él", "tanto", "esa", "estos",
+    "mucho", "quien", "nada", "muchos", "cual", "poco", "ella", "estar", "estas", "algunas",
+    "algo", "nosotros", "mi", "mis", "tú", "te", "ti", "estoy", "está", "estamos",
+    "están", "ser", "tener", "hacer", "poder", "decir", "ir", "ver", "dar", "saber",
+    "querer", "llegar", "pasar", "deber", "poner", "parecer", "quedar", "creer", "hablar", "llevar",
+    "dejar", "seguir", "encontrar", "llamar", "venir", "pensar", "salir", "volver", "tomar", "conocer",
+    "vivir", "sentir", "tratar", "mirar", "contar", "empezar", "esperar", "buscar", "existir", "entrar",
+    "trabajar", "escribir", "perder", "producir", "ocurrir", "entender", "pedir", "recibir", "recordar", "terminar",
+    "permitir", "aparecer", "conseguir", "comenzar", "servir", "sacar", "necesitar", "mantener", "resultar", "leer",
+    "caer", "cambiar", "presentar", "crear", "abrir", "considerar", "oír", "acabar", "convertir", "ganar",
+    "formar", "traer", "partir", "morir", "aceptar", "realizar", "suponer", "comprender", "lograr", "explicar",
+    "preguntar", "tocar", "reconocer", "estudiar", "alcanzar", "nacer", "dirigir", "correr", "utilizar", "pagar",
+    "ayudar", "gustar", "jugar", "escuchar", "cumplir", "ofrecer", "descubrir", "levantar", "intentar", "usar",
+    "decidir", "repetir", "olvidar", "comer", "llorar", "dormir", "entregar", "faltar", "visitar", "matar",
+    "historia", "hombre", "mujer", "país", "año", "día", "vez", "tiempo", "vida", "mundo",
+    "casa", "gobierno", "parte", "trabajo", "forma", "guerra", "caso", "agua", "mano", "padre",
+    "madre", "hijo", "pueblo", "ciudad", "noche", "lugar", "persona", "tierra", "amor", "nombre",
+    "cosa", "problema", "cabeza", "familia", "grupo", "palabra", "hora", "rostro", "esposa", "amigo",
+    "grande", "nuevo", "bueno", "primer", "viejo", "mejor", "pequeño", "alto", "propio", "blanco",
+    "mismo", "último", "largo", "joven", "único", "pobre", "fuerte", "diferente", "importante", "cierto",
+    "posible", "humano", "político", "social", "necesario", "claro", "solo", "libre", "especial", "duro",
+    "rojo", "común", "capaz", "rápido", "simple", "azul", "fácil", "feliz", "suave", "natural",
+    "seguro", "hermoso", "frío", "contento", "loco", "cómodo", "económico", "inmediato", "directo", "absoluto",
+    "ahora", "siempre", "después", "allí", "ayer", "hoy", "luego", "entonces", "bien", "aquí",
+    "nunca", "así", "todavía", "tan", "tarde", "casi", "menos", "sólo", "además", "quizás",
+    "dentro", "fuera", "debajo", "detrás", "encima", "cerca", "pronto", "atrás", "alrededor", "bastante"
+  ],
+  "orderedByFrequency": true,
+  "additionalAccents": [
+    ["á", "a"], ["é", "e"], ["í", "i"], ["ó", "o"], ["ú", "u"],
+    ["ü", "u"], ["ñ", "n"]
+  ]
+}
