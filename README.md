@@ -26,19 +26,6 @@ curl -fsSL https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.sh
 irm https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.ps1 | iex
 ```
 
-**Android (Termux):**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.sh | bash
-```
-
-Or download directly:
-
-```bash
-curl -Lo ~/.local/bin/tcli https://github.com/Camilo-845/type-cli/releases/latest/download/tcli-android-arm64
-chmod +x ~/.local/bin/tcli
-```
-
 Installs `tcli` to `~/.local/bin`. Ensure it's in your `PATH`. Only `curl` or `wget` required.
 
 ## Usage
