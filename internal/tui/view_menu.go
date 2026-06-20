@@ -64,6 +64,11 @@ func (m Model) viewMenu() string {
 			menuValueStyle.Render("["+item.value+"]"))
 	}
 
+	var extraContent string
+	if m.filtering {
+		extraContent = m.renderFilter()
+	}
+
 	helpStr := "[enter/space] start    [↑/↓] navigate    [←/→][h/l] change    [H] history    [q] quit"
 	if m.width < 60 {
 		helpStr = "[enter/space] start  [↑/↓] nav\n[h/l] change  [H] history  [q] quit"
@@ -80,8 +85,52 @@ func (m Model) viewMenu() string {
 			logo,
 			"",
 			menu.String(),
+			extraContent,
 			"",
 			help,
 		),
 	)
+}
+
+func (m Model) renderFilter() string {
+	var b strings.Builder
+
+	filterLine := fmt.Sprintf("  filter: %s▏", m.filterText)
+	b.WriteString(filterInputStyle.Render(filterLine))
+	b.WriteString("\n")
+
+	if len(m.filteredList) == 0 {
+		b.WriteString(filterNoMatchStyle.Render("  no matches"))
+	} else {
+		start := m.filterCursor
+		end := min(start+8, len(m.filteredList))
+		if end-start < 8 && len(m.filteredList) > 8 {
+			start = max(0, end-8)
+		}
+
+		if start > 0 {
+			b.WriteString(filterMoreStyle.Render(fmt.Sprintf("  ▲ %d more", start)))
+			b.WriteString("\n")
+		}
+
+		for i := start; i < end; i++ {
+			prefix := "    "
+			style := filterItemStyle
+			if i == m.filterCursor {
+				prefix = "  ▸ "
+				style = filterSelectedStyle
+			}
+			b.WriteString(prefix)
+			b.WriteString(style.Render(m.filteredList[i]))
+			b.WriteString("\n")
+		}
+
+		if end < len(m.filteredList) {
+			b.WriteString(filterMoreStyle.Render(fmt.Sprintf("  ▼ %d more", len(m.filteredList)-end)))
+		}
+	}
+
+	b.WriteString(filterHelpStyle.Render("  [type] filter  [↑/↓] select  [enter] confirm  [esc] cancel"))
+
+	return b.String()
 }
