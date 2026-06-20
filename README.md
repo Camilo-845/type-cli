@@ -8,9 +8,9 @@
 
 A fast, responsive terminal-based typing speed test built with Go, Bubble Tea, and Lipgloss. Supports timed and word-count modes, multiple word lists, per-character accuracy coloring, and adaptive layout down to 30-column terminals.
 
-![demo](demo.gif)
+<img width="1988" height="1080" alt="demo" src="https://github.com/user-attachments/assets/09bcfe9d-cadf-4a88-8061-8514294cce80" />
 
-![color-demo](./color-demo.webp)
+<img width="1898" height="1032" alt="combined-image" src="https://github.com/user-attachments/assets/7f9f7641-9c6f-4a35-9405-38ab3cdd8a4c" />
 
 ## Install
 
