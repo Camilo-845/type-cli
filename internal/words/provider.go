@@ -17,10 +17,6 @@ func SortedNames() []string {
 	return names
 }
 
-func Names() []string {
-	return SortedNames()
-}
-
 func Words(listName string) ([]string, bool) {
 	w, ok := lists[listName]
 	return w, ok

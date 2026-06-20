@@ -24,42 +24,48 @@ func DefaultConfig() *Config {
 	}
 }
 
-func AvailableLanguages() []string {
-	return words.SortedNames()
-}
-
-func (c *Config) Validate() *Config {
+func (c *Config) Validate() {
 	if c == nil {
-		return DefaultConfig()
+		return
 	}
 
-	validModes := map[string]bool{"time": true, "words": true}
-	if !validModes[c.Mode] {
+	if c.Mode != "time" && c.Mode != "words" {
 		c.Mode = "time"
 	}
 
-	validDurations := map[int]bool{15: true, 30: true, 60: true, 120: true}
-	if !validDurations[c.Duration] {
+	if !isValidDuration(c.Duration) {
 		c.Duration = 30
 	}
 
-	validCounts := map[int]bool{10: true, 25: true, 50: true, 100: true}
-	if !validCounts[c.WordCount] {
+	if !isValidWordCount(c.WordCount) {
 		c.WordCount = 25
 	}
 
-	available := make(map[string]bool)
-	for _, lang := range words.SortedNames() {
-		available[lang] = true
-	}
-	if len(available) == 0 {
-		available["english"] = true
-	}
-	if !available[c.WordList] {
+	if !isValidLanguage(c.WordList) {
 		c.WordList = "english"
 	}
+}
 
-	return c
+var (
+	validDurations = map[int]bool{15: true, 30: true, 60: true, 120: true}
+	validCounts    = map[int]bool{10: true, 25: true, 50: true, 100: true}
+)
+
+func isValidDuration(d int) bool {
+	return validDurations[d]
+}
+
+func isValidWordCount(c int) bool {
+	return validCounts[c]
+}
+
+func isValidLanguage(name string) bool {
+	for _, lang := range words.SortedNames() {
+		if lang == name {
+			return true
+		}
+	}
+	return false
 }
 
 func (c *Config) ToggleMode() {

@@ -7,6 +7,12 @@ import (
 	"unicode"
 )
 
+const (
+	maxRegenAttempts   = 100
+	numberProbability  = 0.1
+	maxNumberLength    = 4
+)
+
 type GeneratorConfig struct {
 	Punctuation bool
 	LazyMode    bool
@@ -73,7 +79,7 @@ func (g *Generator) nextWord(wordIndex, wordsBound int, prevWord, prevWord2 stri
 		firstAfterSplitLazy := g.applyLazyMode(firstAfterSplit)
 
 		regenCount := 0
-		for regenCount < 100 &&
+		for regenCount < maxRegenAttempts &&
 			(prevWordRaw == firstAfterSplitLazy ||
 				prevWord2Raw == firstAfterSplitLazy ||
 				(!g.cfg.Punctuation && randomWord == "I") ||
@@ -125,8 +131,8 @@ func (g *Generator) nextWord(wordIndex, wordsBound int, prevWord, prevWord2 stri
 		randomWord = g.punctuateWord(prevWord, randomWord, wordIndex, wordsBound)
 	}
 
-	if g.cfg.Numbers && rand.Float64() < 0.1 {
-		randomWord = g.generateNumbers(4)
+	if g.cfg.Numbers && rand.Float64() < numberProbability {
+		randomWord = g.generateNumbers(maxNumberLength)
 	}
 
 	return randomWord
@@ -315,13 +321,11 @@ func (g *Generator) codeSpecial() string {
 }
 
 func stripForCompare(word string) string {
-	re := regexp.MustCompile(`[.?!":\-,]`)
-	return strings.ToLower(re.ReplaceAllString(word, ""))
+	return strings.ToLower(stripForCompareRe.ReplaceAllString(word, ""))
 }
 
 func stripForCompare2(word string) string {
-	re := regexp.MustCompile(`[.?!":\-,']`)
-	return strings.ToLower(re.ReplaceAllString(word, ""))
+	return strings.ToLower(stripCompare2Re.ReplaceAllString(word, ""))
 }
 
 func firstWord(s string) string {
@@ -333,10 +337,7 @@ func firstWord(s string) string {
 }
 
 func collapseSpaces(s string) string {
-	re := regexp.MustCompile(` +`)
-	s = re.ReplaceAllString(s, " ")
-	s = strings.TrimSpace(s)
-	return s
+	return strings.TrimSpace(collapseSpacesRe.ReplaceAllString(s, " "))
 }
 
 func lastRune(s string) rune {
@@ -369,13 +370,17 @@ func containsUpper(s string) bool {
 	return false
 }
 
-var symbolRe = regexp.MustCompile(`[-=_+\[\]{};'\\:"|,./<>?]`)
+var (
+	symbolRe          = regexp.MustCompile(`[-=_+\[\]{};'\\:"|,./<>?]`)
+	digitRe           = regexp.MustCompile(`[0-9]`)
+	collapseSpacesRe  = regexp.MustCompile(` +`)
+	stripForCompareRe = regexp.MustCompile(`[.?!":\-,]`)
+	stripCompare2Re   = regexp.MustCompile(`[.?!":\-,']`)
+)
 
 func hasSymbols(s string) bool {
 	return symbolRe.MatchString(s)
 }
-
-var digitRe = regexp.MustCompile(`[0-9]`)
 
 func hasDigits(s string) bool {
 	return digitRe.MatchString(s)

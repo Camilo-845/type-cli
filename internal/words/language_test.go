@@ -119,7 +119,7 @@ func TestLanguageMeta(t *testing.T) {
 }
 
 func TestNames(t *testing.T) {
-	names := Names()
+	names := SortedNames()
 	if len(names) == 0 {
 		t.Fatal("Names() returned empty list")
 	}

@@ -32,7 +32,8 @@ func Load() *Config {
 		return DefaultConfig()
 	}
 
-	return cfg.Validate()
+	cfg.Validate()
+	return &cfg
 }
 
 func Save(cfg *Config) error {

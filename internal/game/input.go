@@ -12,7 +12,6 @@ func (g *Game) handleKeystroke(char rune) {
 	if g.State == Idle {
 		g.State = Running
 		g.firstKeyTime = time.Now()
-		g.lastBurstTick = time.Now()
 	}
 
 	ws := g.CurrentWord()
@@ -35,23 +34,19 @@ func (g *Game) handleKeystroke(char rune) {
 		ws.Correct[idx] = false
 	}
 
-	if ws.Correct[idx] {
-		g.correctKeystrokes++
-	} else {
-		g.incorrectKeystrokes++
-	}
 	if idx >= len(ws.Word) {
-		g.extraKeystrokes++
-	}
-
-	g.totalKeystrokes++
-	g.pendingKeystrokes++
-	if ws.Correct[idx] {
-		g.pendingCorrect++
+		g.keystrokes.RecordExtra()
+		g.bursts.AddPending(false)
+	} else if ws.Correct[idx] {
+		g.keystrokes.RecordCorrect()
+		g.bursts.AddPending(true)
+	} else {
+		g.keystrokes.RecordIncorrect()
+		g.bursts.AddPending(false)
 	}
 
 	if g.Current == g.WordCount-1 && len(ws.Typed) == len(ws.Word) {
-		g.completedWords++
+		g.keystrokes.RecordWord()
 		g.Current++
 		g.State = Complete
 	}
@@ -91,30 +86,26 @@ func (g *Game) handleBackspace() {
 	if len(ws.Typed) == 0 {
 		if g.Current > 0 {
 			g.Current--
-			if g.completedWords > 0 {
-				g.completedWords--
-			}
+			g.keystrokes.UndoWord()
 		}
 		return
 	}
 
 	idx := len(ws.Typed) - 1
 	wasCorrect := ws.Correct[idx]
+	wasExtra := idx >= len(ws.Word)
 
 	ws.Typed = ws.Typed[:len(ws.Typed)-1]
 	ws.Correct = ws.Correct[:len(ws.Correct)-1]
 
-	g.totalKeystrokes--
-	g.pendingKeystrokes--
-	if wasCorrect {
-		g.correctKeystrokes--
-		g.pendingCorrect--
+	if wasExtra {
+		g.keystrokes.UndoExtra()
+	} else if wasCorrect {
+		g.keystrokes.UndoCorrect()
 	} else {
-		g.incorrectKeystrokes--
-		if idx >= len(ws.Word) {
-			g.extraKeystrokes--
-		}
+		g.keystrokes.UndoIncorrect()
 	}
+	g.bursts.UndoPending(wasCorrect)
 }
 
 func (g *Game) submitWord() {
@@ -122,7 +113,7 @@ func (g *Game) submitWord() {
 		return
 	}
 
-	g.completedWords++
+	g.keystrokes.RecordWord()
 
 	g.Current++
 	if g.Current >= len(g.Words) {

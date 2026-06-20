@@ -64,7 +64,7 @@ func (m *Model) startGame() {
 		Numbers:     m.cfg.Numbers,
 	}
 
-	wordPool := words.Generate(500, m.cfg.WordList, genCfg)
+	wordPool := words.Generate(game.WordPoolSize, m.cfg.WordList, genCfg)
 
 	if m.cfg.Mode == "words" {
 		m.gm = game.NewWordGame(m.cfg.WordCount, wordPool)
