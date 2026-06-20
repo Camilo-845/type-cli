@@ -48,9 +48,9 @@ func (m Model) viewMenu() string {
 			menuValueStyle.Render("["+item.value+"]"))
 	}
 
-	helpStr := "[enter/space] start    [↑/↓] navigate    [←/→][h/l] change    [q] quit"
+	helpStr := "[enter/space] start    [↑/↓] navigate    [←/→][h/l] change    [H] history    [q] quit"
 	if m.width < 60 {
-		helpStr = "[enter/space] start  [↑/↓] nav\n[h/l] change  [q] quit"
+		helpStr = "[enter/space] start  [↑/↓] nav\n[h/l] change  [H] history  [q] quit"
 	}
 	helpLines := strings.Split(helpStr, "\n")
 	padWidth := max(m.width, 30)
