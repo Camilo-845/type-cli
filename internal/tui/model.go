@@ -51,7 +51,13 @@ func (m *Model) SetLanguage(lang string) {
 func (m *Model) startGame() {
 	_ = config.Save(m.cfg)
 
-	wordPool := words.Generate(500, m.cfg.WordList)
+	genCfg := words.GeneratorConfig{
+		Punctuation: m.cfg.Punctuation,
+		LazyMode:    m.cfg.LazyMode,
+		Numbers:     m.cfg.Numbers,
+	}
+
+	wordPool := words.Generate(500, m.cfg.WordList, genCfg)
 
 	if m.cfg.Mode == "words" {
 		m.gm = game.NewWordGame(m.cfg.WordCount, wordPool)

@@ -8,6 +8,7 @@ import (
 
 func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	key := msg.String()
+	maxCursor := m.cfg.CursorCount() - 1
 
 	switch key {
 	case "q":
@@ -15,14 +16,14 @@ func (m Model) handleMenuKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "j", "down":
 		m.cursor++
-		if m.cursor > 2 {
+		if m.cursor > maxCursor {
 			m.cursor = 0
 		}
 
 	case "k", "up":
 		m.cursor--
 		if m.cursor < 0 {
-			m.cursor = 2
+			m.cursor = maxCursor
 		}
 
 	case "l", "right":

@@ -24,6 +24,19 @@ func (m Model) viewMenu() string {
 		paramValue = fmt.Sprintf("%d", m.cfg.WordCount)
 	}
 
+	puncVal := "off"
+	if m.cfg.Punctuation {
+		puncVal = "on"
+	}
+	lazyVal := "off"
+	if m.cfg.LazyMode {
+		lazyVal = "on"
+	}
+	numsVal := "off"
+	if m.cfg.Numbers {
+		numsVal = "on"
+	}
+
 	items := []struct {
 		label string
 		value string
@@ -31,6 +44,9 @@ func (m Model) viewMenu() string {
 		{"mode", m.cfg.Mode},
 		{paramLabel, paramValue},
 		{"language", m.cfg.WordList},
+		{"punctuation", puncVal},
+		{"lazy mode", lazyVal},
+		{"numbers", numsVal},
 	}
 
 	var menu strings.Builder

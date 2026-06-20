@@ -3,23 +3,29 @@ package config
 import "github.com/Camilo-845/type-cli/internal/words"
 
 type Config struct {
-	Mode      string `json:"mode"`
-	Duration  int    `json:"duration"`
-	WordCount int    `json:"word_count"`
-	WordList  string `json:"word_list"`
+	Mode        string `json:"mode"`
+	Duration    int    `json:"duration"`
+	WordCount   int    `json:"word_count"`
+	WordList    string `json:"word_list"`
+	Punctuation bool   `json:"punctuation"`
+	LazyMode    bool   `json:"lazy_mode"`
+	Numbers     bool   `json:"numbers"`
 }
 
 func DefaultConfig() *Config {
 	return &Config{
-		Mode:      "time",
-		Duration:  30,
-		WordCount: 25,
-		WordList:  "english",
+		Mode:        "time",
+		Duration:    30,
+		WordCount:   25,
+		WordList:    "english",
+		Punctuation: false,
+		LazyMode:    false,
+		Numbers:     false,
 	}
 }
 
 func AvailableLanguages() []string {
-	return words.ListLanguages()
+	return words.SortedNames()
 }
 
 func (c *Config) Validate() *Config {
@@ -43,7 +49,7 @@ func (c *Config) Validate() *Config {
 	}
 
 	available := make(map[string]bool)
-	for _, lang := range words.ListLanguages() {
+	for _, lang := range words.SortedNames() {
 		available[lang] = true
 	}
 	if len(available) == 0 {
@@ -97,7 +103,7 @@ func (c *Config) CycleWordCount(forward bool) {
 }
 
 func (c *Config) CycleWordList(forward bool) {
-	names := words.Names()
+	names := words.SortedNames()
 	if len(names) == 0 {
 		return
 	}
@@ -115,6 +121,18 @@ func (c *Config) CycleWordList(forward bool) {
 	c.WordList = names[0]
 }
 
+func (c *Config) TogglePunctuation() {
+	c.Punctuation = !c.Punctuation
+}
+
+func (c *Config) ToggleLazyMode() {
+	c.LazyMode = !c.LazyMode
+}
+
+func (c *Config) ToggleNumbers() {
+	c.Numbers = !c.Numbers
+}
+
 func (c *Config) Apply(cursor int, forward bool) {
 	switch cursor {
 	case 0:
@@ -127,5 +145,15 @@ func (c *Config) Apply(cursor int, forward bool) {
 		}
 	case 2:
 		c.CycleWordList(forward)
+	case 3:
+		c.TogglePunctuation()
+	case 4:
+		c.ToggleLazyMode()
+	case 5:
+		c.ToggleNumbers()
 	}
+}
+
+func (c *Config) CursorCount() int {
+	return 6
 }
