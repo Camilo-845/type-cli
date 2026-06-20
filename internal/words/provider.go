@@ -1,8 +1,6 @@
 package words
 
-import (
-	"math/rand/v2"
-)
+import "slices"
 
 var lists = map[string][]string{}
 
@@ -10,11 +8,12 @@ func Register(name string, words []string) {
 	lists[name] = words
 }
 
-func Names() []string {
+func SortedNames() []string {
 	names := make([]string, 0, len(lists))
 	for name := range lists {
 		names = append(names, name)
 	}
+	slices.Sort(names)
 	return names
 }
 
@@ -23,21 +22,18 @@ func Words(listName string) ([]string, bool) {
 	return w, ok
 }
 
-func Generate(count int, listName string) []string {
-	pool, ok := lists[listName]
+func Generate(count int, listName string, cfg GeneratorConfig) []string {
+	meta, ok := languageMeta[listName]
 	if !ok {
 		if len(lists) == 0 {
 			return []string{"the", "quick", "brown", "fox"}
 		}
 		for _, v := range lists {
-			pool = v
+			meta = LanguageObject{Name: listName, Words: v}
 			break
 		}
 	}
 
-	words := make([]string, count)
-	for i := 0; i < count; i++ {
-		words[i] = pool[rand.IntN(len(pool))]
-	}
-	return words
+	gen := NewGenerator(&meta, cfg)
+	return gen.GenerateWords(count)
 }

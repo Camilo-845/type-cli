@@ -14,33 +14,25 @@ const (
 )
 
 type WordState struct {
-	Word    string
-	Typed   string
+	Word    []rune
+	Typed   []rune
 	Correct []bool
 }
 
 type Game struct {
-	Words    []WordState
-	Current  int
-	State    State
-	Elapsed  time.Duration
+	Words   []WordState
+	Current int
+	State   State
+	Elapsed time.Duration
 
-	totalKeystrokes     int
-	correctKeystrokes   int
-	incorrectKeystrokes int
-	extraKeystrokes     int
-	completedWords      int
-	firstKeyTime        time.Time
+	keystrokes   KeystrokeTracker
+	bursts       BurstTracker
+	firstKeyTime time.Time
+	totalChars   int
 
 	TimeMode  bool
 	Duration  time.Duration
 	WordCount int
-
-	burstKeystrokes []int
-	burstCorrect    []int
-	lastBurstTick   time.Time
-	pendingKeystrokes int
-	pendingCorrect    int
 }
 
 type Stats struct {
@@ -55,15 +47,17 @@ type Stats struct {
 	Duration        time.Duration
 }
 
-const wordPoolSize = 500
+const WordPoolSize = 500
 
 func NewTimeGame(durationSec int, words []string) *Game {
-	batch := make([]WordState, wordPoolSize)
+	batch := make([]WordState, WordPoolSize)
+	var totalChars int
 	for i, w := range words {
-		if i >= wordPoolSize {
+		if i >= WordPoolSize {
 			break
 		}
-		batch[i] = WordState{Word: w, Typed: "", Correct: nil}
+		batch[i] = WordState{Word: []rune(w), Typed: nil, Correct: nil}
+		totalChars += len([]rune(w))
 	}
 	return &Game{
 		Words:      batch,
@@ -71,17 +65,20 @@ func NewTimeGame(durationSec int, words []string) *Game {
 		State:      Idle,
 		TimeMode:   true,
 		Duration:   time.Duration(durationSec) * time.Second,
-		WordCount:  wordPoolSize,
+		WordCount:  WordPoolSize,
+		totalChars: totalChars,
 	}
 }
 
 func NewWordGame(count int, words []string) *Game {
 	batch := make([]WordState, count)
+	var totalChars int
 	for i, w := range words {
 		if i >= count {
 			break
 		}
-		batch[i] = WordState{Word: w, Typed: "", Correct: nil}
+		batch[i] = WordState{Word: []rune(w), Typed: nil, Correct: nil}
+		totalChars += len([]rune(w))
 	}
 	return &Game{
 		Words:      batch,
@@ -89,6 +86,7 @@ func NewWordGame(count int, words []string) *Game {
 		State:      Idle,
 		TimeMode:   false,
 		WordCount:  count,
+		totalChars: totalChars,
 	}
 }
 

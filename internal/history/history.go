@@ -9,6 +9,8 @@ import (
 	"github.com/Camilo-845/type-cli/internal/paths"
 )
 
+const MaxHistoryEntries = 100
+
 func historyPath() (string, error) {
 	dir, err := paths.AppDir()
 	if err != nil {
@@ -67,9 +69,8 @@ func Append(result game.Result) error {
 		results = []game.Result{}
 	}
 
-	const maxResults = 100
-	if len(results) >= maxResults {
-		results = results[len(results)-maxResults+1:]
+	if len(results) >= MaxHistoryEntries {
+		results = results[len(results)-MaxHistoryEntries+1:]
 	}
 
 	results = append(results, result)

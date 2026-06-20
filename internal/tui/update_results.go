@@ -3,8 +3,10 @@ package tui
 import (
 	tea "github.com/charmbracelet/bubbletea"
 
-	hg "github.com/Camilo-845/type-cli/internal/history"
+	hg 	"github.com/Camilo-845/type-cli/internal/history"
 )
+
+const historyVisibleEntries = 15
 
 func (m Model) handleResultKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	key := msg.String()
@@ -14,6 +16,7 @@ func (m Model) handleResultKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "h":
+		m.previousScreen = m.screen
 		m.screen = screenHistory
 		m.historyScroll = 0
 		var err error
@@ -43,7 +46,7 @@ func (m Model) handleHistoryKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "j", "down":
-		maxScroll := max(len(m.results)-15, 0)
+		maxScroll := max(len(m.results)-historyVisibleEntries, 0)
 		if m.historyScroll < maxScroll {
 			m.historyScroll++
 		}
@@ -54,7 +57,7 @@ func (m Model) handleHistoryKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 	case "esc":
-		m.screen = screenResults
+		m.screen = m.previousScreen
 		m.historyScroll = 0
 		return m, nil
 

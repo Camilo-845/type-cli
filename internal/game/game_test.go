@@ -22,14 +22,14 @@ func TestHandleKey_CorrectChar(t *testing.T) {
 	g.HandleKey("a")
 
 	ws := g.CurrentWord()
-	if ws.Typed != "a" {
-		t.Errorf("expected 'a', got %q", ws.Typed)
+	if string(ws.Typed) != "a" {
+		t.Errorf("expected 'a', got %q", string(ws.Typed))
 	}
 	if !ws.Correct[0] {
 		t.Error("expected correct")
 	}
-	if g.correctKeystrokes != 1 {
-		t.Errorf("expected 1 correct, got %d", g.correctKeystrokes)
+	if g.keystrokes.Correct() != 1 {
+		t.Errorf("expected 1 correct, got %d", g.keystrokes.Correct())
 	}
 }
 
@@ -41,8 +41,8 @@ func TestHandleKey_IncorrectChar(t *testing.T) {
 	if ws.Correct[0] {
 		t.Error("expected incorrect")
 	}
-	if g.incorrectKeystrokes != 1 {
-		t.Errorf("expected 1 incorrect, got %d", g.incorrectKeystrokes)
+	if g.keystrokes.Incorrect() != 1 {
+		t.Errorf("expected 1 incorrect, got %d", g.keystrokes.Incorrect())
 	}
 }
 
@@ -56,8 +56,8 @@ func TestHandleKey_SpaceAdvancesWord(t *testing.T) {
 	if g.Current != 1 {
 		t.Errorf("expected current 1, got %d", g.Current)
 	}
-	if g.completedWords != 1 {
-		t.Errorf("expected 1 completed, got %d", g.completedWords)
+	if g.keystrokes.Words() != 1 {
+		t.Errorf("expected 1 completed, got %d", g.keystrokes.Words())
 	}
 }
 
@@ -68,8 +68,8 @@ func TestHandleKey_Backspace(t *testing.T) {
 	g.HandleKey("backspace")
 
 	ws := g.CurrentWord()
-	if ws.Typed != "a" {
-		t.Errorf("expected 'a', got %q", ws.Typed)
+	if string(ws.Typed) != "a" {
+		t.Errorf("expected 'a', got %q", string(ws.Typed))
 	}
 	if len(ws.Correct) != 1 {
 		t.Errorf("expected 1 correct bool, got %d", len(ws.Correct))
@@ -86,8 +86,8 @@ func TestHandleKey_ExtraChars(t *testing.T) {
 	if len(ws.Typed) != 3 {
 		t.Errorf("expected 3 typed chars, got %d", len(ws.Typed))
 	}
-	if g.extraKeystrokes != 2 {
-		t.Errorf("expected 2 extra, got %d", g.extraKeystrokes)
+	if g.keystrokes.Extra() != 2 {
+		t.Errorf("expected 2 extra, got %d", g.keystrokes.Extra())
 	}
 }
 
@@ -165,11 +165,51 @@ func TestReset(t *testing.T) {
 	if g.Current != 0 {
 		t.Error("expected current 0 after reset")
 	}
-	if g.totalKeystrokes != 0 {
+	if g.keystrokes.Total() != 0 {
 		t.Error("expected 0 keystrokes after reset")
 	}
 }
 
+func TestHandleKey_AccentedChars(t *testing.T) {
+	g := NewTimeGame(30, []string{"café", "tú", "año"})
+	g.HandleKey("c")
+	g.HandleKey("a")
+	g.HandleKey("f")
+	g.HandleKey("é")
+
+	ws := g.CurrentWord()
+	if string(ws.Typed) != "café" {
+		t.Errorf("expected 'café', got %q", string(ws.Typed))
+	}
+	if len(ws.Correct) != 4 {
+		t.Errorf("expected 4 correct entries, got %d", len(ws.Correct))
+	}
+	for i, c := range ws.Correct {
+		if !c {
+			t.Errorf("char %d should be correct", i)
+		}
+	}
+
+	g.HandleKey(" ")
+	if g.Current != 1 {
+		t.Errorf("expected current 1, got %d", g.Current)
+	}
+}
+
+func TestHandleKey_BackspaceAccented(t *testing.T) {
+	g := NewTimeGame(30, []string{"tú", "yo"})
+	g.HandleKey("t")
+	g.HandleKey("ú")
+	g.HandleKey("backspace")
+
+	ws := g.CurrentWord()
+	if string(ws.Typed) != "t" {
+		t.Errorf("expected 't' after backspace, got %q", string(ws.Typed))
+	}
+	if len(ws.Correct) != 1 {
+		t.Errorf("expected 1 correct entry, got %d", len(ws.Correct))
+	}
+}
 func TestStats(t *testing.T) {
 	t.Run("idle stats are zero", func(t *testing.T) {
 		g := NewTimeGame(30, []string{"hello"})

@@ -1,47 +1,71 @@
 package config
 
+import "github.com/Camilo-845/type-cli/internal/words"
+
 type Config struct {
 	Mode        string `json:"mode"`
 	Duration    int    `json:"duration"`
 	WordCount   int    `json:"word_count"`
 	WordList    string `json:"word_list"`
+	Punctuation bool   `json:"punctuation"`
+	LazyMode    bool   `json:"lazy_mode"`
+	Numbers     bool   `json:"numbers"`
 }
 
 func DefaultConfig() *Config {
 	return &Config{
-		Mode:      "time",
-		Duration:  30,
-		WordCount: 25,
-		WordList:  "english",
+		Mode:        "time",
+		Duration:    30,
+		WordCount:   25,
+		WordList:    "english",
+		Punctuation: false,
+		LazyMode:    false,
+		Numbers:     false,
 	}
 }
 
-func (c *Config) Validate() *Config {
+func (c *Config) Validate() {
 	if c == nil {
-		return DefaultConfig()
+		return
 	}
 
-	validModes := map[string]bool{"time": true, "words": true}
-	if !validModes[c.Mode] {
+	if c.Mode != "time" && c.Mode != "words" {
 		c.Mode = "time"
 	}
 
-	validDurations := map[int]bool{15: true, 30: true, 60: true, 120: true}
-	if !validDurations[c.Duration] {
+	if !isValidDuration(c.Duration) {
 		c.Duration = 30
 	}
 
-	validCounts := map[int]bool{10: true, 25: true, 50: true, 100: true}
-	if !validCounts[c.WordCount] {
+	if !isValidWordCount(c.WordCount) {
 		c.WordCount = 25
 	}
 
-	validLists := map[string]bool{"english": true, "english_1k": true}
-	if !validLists[c.WordList] {
+	if !isValidLanguage(c.WordList) {
 		c.WordList = "english"
 	}
+}
 
-	return c
+var (
+	validDurations = map[int]bool{15: true, 30: true, 60: true, 120: true}
+	validCounts    = map[int]bool{10: true, 25: true, 50: true, 100: true}
+)
+
+func isValidDuration(d int) bool {
+	return validDurations[d]
+}
+
+func isValidWordCount(c int) bool {
+	return validCounts[c]
+}
+
+func isValidLanguage(name string) bool {
+	for _, lang := range words.SortedNames() {
+		if lang == name {
+			return true
+		}
+	}
+	return false
 }
 
 func (c *Config) ToggleMode() {
@@ -84,20 +108,35 @@ func (c *Config) CycleWordCount(forward bool) {
 	}
 }
 
-var lists = []string{"english", "english_1k"}
-
 func (c *Config) CycleWordList(forward bool) {
-	n := len(lists)
-	for i, l := range lists {
+	names := words.SortedNames()
+	if len(names) == 0 {
+		return
+	}
+	n := len(names)
+	for i, l := range names {
 		if l == c.WordList {
 			if forward {
-				c.WordList = lists[(i+1)%n]
+				c.WordList = names[(i+1)%n]
 			} else {
-				c.WordList = lists[(i-1+n)%n]
+				c.WordList = names[(i-1+n)%n]
 			}
 			return
 		}
 	}
+	c.WordList = names[0]
+}
+
+func (c *Config) TogglePunctuation() {
+	c.Punctuation = !c.Punctuation
+}
+
+func (c *Config) ToggleLazyMode() {
+	c.LazyMode = !c.LazyMode
+}
+
+func (c *Config) ToggleNumbers() {
+	c.Numbers = !c.Numbers
 }
 
 func (c *Config) Apply(cursor int, forward bool) {
@@ -112,5 +151,15 @@ func (c *Config) Apply(cursor int, forward bool) {
 		}
 	case 2:
 		c.CycleWordList(forward)
+	case 3:
+		c.TogglePunctuation()
+	case 4:
+		c.ToggleLazyMode()
+	case 5:
+		c.ToggleNumbers()
 	}
+}
+
+func (c *Config) CursorCount() int {
+	return 6
 }

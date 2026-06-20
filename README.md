@@ -10,6 +10,8 @@ A fast, responsive terminal-based typing speed test built with Go, Bubble Tea, a
 
 ![demo](demo.gif)
 
+![color-demo](./color-demo.webp)
+
 ## Install
 
 **Linux / macOS:**
