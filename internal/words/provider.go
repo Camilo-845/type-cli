@@ -1,9 +1,6 @@
 package words
 
-import (
-	"math"
-	"math/rand/v2"
-)
+import "slices"
 
 var lists = map[string][]string{}
 
@@ -11,12 +8,17 @@ func Register(name string, words []string) {
 	lists[name] = words
 }
 
-func Names() []string {
+func SortedNames() []string {
 	names := make([]string, 0, len(lists))
 	for name := range lists {
 		names = append(names, name)
 	}
+	slices.Sort(names)
 	return names
+}
+
+func Names() []string {
+	return SortedNames()
 }
 
 func Words(listName string) ([]string, bool) {
@@ -24,37 +26,18 @@ func Words(listName string) ([]string, bool) {
 	return w, ok
 }
 
-func Generate(count int, listName string) []string {
-	pool, ok := lists[listName]
+func Generate(count int, listName string, cfg GeneratorConfig) []string {
+	meta, ok := languageMeta[listName]
 	if !ok {
 		if len(lists) == 0 {
 			return []string{"the", "quick", "brown", "fox"}
 		}
 		for _, v := range lists {
-			pool = v
+			meta = LanguageObject{Name: listName, Words: v}
 			break
 		}
 	}
 
-	meta, hasMeta := languageMeta[listName]
-	zipf := hasMeta && meta.OrderedByFrequency
-
-	words := make([]string, count)
-	for i := 0; i < count; i++ {
-		if zipf {
-			words[i] = pool[zipfIndex(len(pool))]
-		} else {
-			words[i] = pool[rand.IntN(len(pool))]
-		}
-	}
-	return words
-}
-
-func zipfIndex(n int) int {
-	u := rand.Float64()
-	idx := int(math.Pow(u, 0.85) * float64(n))
-	if idx >= n {
-		idx = n - 1
-	}
-	return idx
+	gen := NewGenerator(&meta, cfg)
+	return gen.GenerateWords(count)
 }

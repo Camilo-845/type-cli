@@ -10,13 +10,15 @@ import (
 var languageFS embed.FS
 
 type LanguageObject struct {
-	Name               string       `json:"name"`
-	Words              []string     `json:"words"`
-	RightToLeft        bool         `json:"rightToLeft,omitempty"`
-	NoLazyMode         bool         `json:"noLazyMode,omitempty"`
-	JoiningScript      bool         `json:"joiningScript,omitempty"`
-	OrderedByFrequency bool         `json:"orderedByFrequency,omitempty"`
-	AdditionalAccents  [][2]string  `json:"additionalAccents,omitempty"`
+	Name               string      `json:"name"`
+	Words              []string    `json:"words"`
+	RightToLeft        bool        `json:"rightToLeft,omitempty"`
+	NoLazyMode         bool        `json:"noLazyMode,omitempty"`
+	JoiningScript      bool        `json:"joiningScript,omitempty"`
+	OrderedByFrequency bool        `json:"orderedByFrequency,omitempty"`
+	AdditionalAccents  [][2]string `json:"additionalAccents,omitempty"`
+	OriginalPunctuation bool       `json:"originalPunctuation,omitempty"`
+	BCP47              string      `json:"bcp47,omitempty"`
 }
 
 var languageMeta = map[string]LanguageObject{}
