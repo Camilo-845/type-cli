@@ -108,4 +108,24 @@ var (
 	timerStyle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(highlight)
+
+	filterInputStyle = lipgloss.NewStyle().
+			Foreground(highlight)
+
+	filterItemStyle = lipgloss.NewStyle().
+			Foreground(white)
+
+	filterSelectedStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(highlight)
+
+	filterNoMatchStyle = lipgloss.NewStyle().
+			Foreground(subtle)
+
+	filterMoreStyle = lipgloss.NewStyle().
+			Foreground(subtle)
+
+	filterHelpStyle = lipgloss.NewStyle().
+			Foreground(muted).
+			MarginTop(1)
 )

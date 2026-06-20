@@ -78,7 +78,7 @@ func (m Model) renderWordsArea() string {
 		} else if i == m.gm.Current {
 			word = m.renderCurrentWord(ws)
 		} else {
-			word = untypedStyle.Render(ws.Word)
+			word = untypedStyle.Render(string(ws.Word))
 		}
 
 		wordWidth := lipgloss.Width(word)
@@ -176,15 +176,19 @@ func (m Model) renderProgressArea() string {
 	var filled int
 	var label string
 
-	totalChars := m.gm.TotalChars()
-	if totalChars > 0 {
-		filled = int(float64(m.gm.CorrectChars()) / float64(totalChars) * float64(barWidth))
-	}
-
 	if m.gm.TimeMode {
+		elapsed := m.gm.Elapsed.Seconds()
+		duration := float64(m.gm.Duration.Seconds())
+		if duration > 0 {
+			filled = int(elapsed / duration * float64(barWidth))
+		}
 		remaining := m.gm.Remaining()
 		label = fmt.Sprintf("%.0fs", remaining.Seconds())
 	} else {
+		totalChars := m.gm.TotalChars()
+		if totalChars > 0 {
+			filled = int(float64(m.gm.CorrectChars()) / float64(totalChars) * float64(barWidth))
+		}
 		label = fmt.Sprintf("%d/%d", m.gm.Current, m.gm.WordCount)
 	}
 
