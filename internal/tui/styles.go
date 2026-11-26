@@ -98,6 +98,9 @@ var (
 	historySelectedStyle = lipgloss.NewStyle().
 			Foreground(highlight).
 			Bold(true)
+
+	historySummaryStyle = lipgloss.NewStyle().
+			Foreground(subtle)
 )
 
 var (

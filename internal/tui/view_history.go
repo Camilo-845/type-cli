@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 
+	hg "github.com/Camilo-845/type-cli/internal/history"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -22,6 +23,19 @@ func (m Model) viewHistory() string {
 	}
 
 	narrow := m.width < 60
+	summary := hg.Summarize(m.results)
+	summaryLines := []string{
+		fmt.Sprintf("Runs: %d  •  Personal best: %.0f WPM", summary.TotalRuns, summary.PersonalBestWPM),
+		fmt.Sprintf("Last %d avg: %.0f WPM  •  %.1f%% accuracy",
+			summary.RecentRuns, summary.RecentAverageWPM, summary.RecentAverageAccuracy),
+	}
+	if narrow {
+		summaryLines = []string{
+			fmt.Sprintf("%d runs • best %.0fWPM", summary.TotalRuns, summary.PersonalBestWPM),
+			fmt.Sprintf("Last%d avg %.0fWPM • %.1f%%",
+				summary.RecentRuns, summary.RecentAverageWPM, summary.RecentAverageAccuracy),
+		}
+	}
 
 	var header string
 	if narrow {
@@ -37,8 +51,12 @@ func (m Model) viewHistory() string {
 	oldest := max(newest-14, 0)
 
 	var items []string
-	items = append(items, header)
+	items = append(items, title)
+	for _, line := range summaryLines {
+		items = append(items, historySummaryStyle.Render(line))
+	}
 	items = append(items, "")
+	items = append(items, header)
 
 	for i := newest; i >= oldest; i-- {
 		r := m.results[i]

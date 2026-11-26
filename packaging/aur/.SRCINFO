@@ -1,0 +1,14 @@
+pkgbase = type-cli
+	pkgdesc = Terminal-based typing speed test
+	pkgver = 0.4.4
+	pkgrel = 1
+	url = https://github.com/Camilo-845/type-cli
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	makedepends = go
+	depends = glibc
+	source = type-cli-0.4.4.tar.gz::https://github.com/Camilo-845/type-cli/archive/refs/tags/v0.4.4.tar.gz
+	sha256sums = 75843a7b176a36ec171dac27d9bfad891cb1a21dc1561a00e11106b80310abee
+
+pkgname = type-cli
