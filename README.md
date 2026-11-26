@@ -17,13 +17,13 @@ A fast, responsive terminal-based typing speed test built with Go, Bubble Tea, a
 **Linux / macOS:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/bloque3/type-cli/main/install.sh | bash
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-irm https://raw.githubusercontent.com/Camilo-845/type-cli/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/bloque3/type-cli/main/install.ps1 | iex
 ```
 
 Installs `tcli` to `~/.local/bin`. Ensure it's in your `PATH`. Only `curl` or `wget` required.
